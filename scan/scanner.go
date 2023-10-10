@@ -1,13 +1,14 @@
-package tcpscan
+package scan
 
 import (
 	"fmt"
 	"goscanner/utils"
 	"net"
 	"sort"
+	"time"
 )
 
-type Tcpscanner struct {
+type Scanner struct {
 	Ip        string
 	BeginPort int
 	EndPort   int
@@ -15,15 +16,15 @@ type Tcpscanner struct {
 	ChanNum   int
 }
 
-func Init(ip string, begin int, end int, channum int) *Tcpscanner {
-	return &Tcpscanner{ip, begin, end, make([]int, 0), channum}
+func Init(begin int, end int, channum int) *Scanner {
+	return &Scanner{"127.0.0.1", begin, end, make([]int, 0), channum}
 }
 
-func (t *Tcpscanner) ScanWorker(ports chan int, results chan int) {
+func (t *Scanner) ScanWorker(protocol string, ports chan int, results chan int) {
 	for port := range ports {
 		address := fmt.Sprintf("%s:%d", t.Ip, port)
 		//fmt.Println("正在检查端口：", port)
-		conn, err := net.Dial("tcp", address)
+		conn, err := net.DialTimeout(protocol, address, 3*time.Second)
 		if err != nil {
 			results <- -1
 			continue
@@ -33,12 +34,12 @@ func (t *Tcpscanner) ScanWorker(ports chan int, results chan int) {
 	}
 }
 
-func (t *Tcpscanner) ScanAll() {
+func (t *Scanner) ScanAll(protocol *string) {
 	ports := make(chan int, t.ChanNum)
 	results := make(chan int)
 	bar := utils.CreateBar(t.EndPort - t.BeginPort + 1)
 	for i := 0; i < t.ChanNum; i++ {
-		go t.ScanWorker(ports, results)
+		go t.ScanWorker(*protocol, ports, results)
 	}
 
 	go func() {
@@ -61,6 +62,6 @@ func (t *Tcpscanner) ScanAll() {
 	sort.Ints(t.Openports)
 }
 
-func (t *Tcpscanner) GetOpenPorts() []int {
+func (t *Scanner) GetOpenPorts() []int {
 	return t.Openports
 }

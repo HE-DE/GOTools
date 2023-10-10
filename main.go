@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"goscanner/tcpscan"
+	"goscanner/scan"
 	"goscanner/utils"
 	"strconv"
 )
@@ -10,15 +10,17 @@ import (
 func main() {
 	args := utils.ParseArgs()
 
-	if args[0] == "tcp" {
+	if args[0] == "ps" {
 		beginport, _ := strconv.Atoi(args[2])
 		endport, _ := strconv.Atoi(args[3])
 		threads, _ := strconv.Atoi(args[4])
-		ts := tcpscan.Init(args[1], beginport, endport, threads)
-		ts.ScanAll()
+		fmt.Println("正在使用端口扫描器扫描端口...")
+		ts := scan.Init(beginport, endport, threads)
+		ts.ScanAll(&args[1])
 		result := ts.GetOpenPorts()
+		fmt.Println("扫描完成！")
 		for _, port := range result {
-			fmt.Printf("\n%d 端口打开了！\n", port)
+			fmt.Printf("%d 端口打开了！\n", port)
 		}
 	}
 
