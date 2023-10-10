@@ -11,12 +11,12 @@ func main() {
 	args := utils.ParseArgs()
 
 	if args[0] == "sc" {
-		beginport, _ := strconv.Atoi(args[2])
-		endport, _ := strconv.Atoi(args[3])
-		threads, _ := strconv.Atoi(args[4])
+		beginport, _ := strconv.Atoi(args[1])
+		endport, _ := strconv.Atoi(args[2])
+		threads, _ := strconv.Atoi(args[3])
 		fmt.Println("正在使用端口扫描器扫描端口...")
 		ts := scan.ScannerInit(beginport, endport, threads)
-		ts.ScanAll(&args[1])
+		ts.ScanAll()
 		result := ts.GetOpenPorts()
 		fmt.Println("扫描完成！")
 		for _, port := range result {
