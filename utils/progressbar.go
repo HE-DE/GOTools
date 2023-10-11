@@ -8,7 +8,7 @@ func CreateBar(max int) *progressbar.ProgressBar {
 	bar := progressbar.NewOptions(max,
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionSetWidth(25),
-		progressbar.OptionSetDescription("[cyan][reset]正在检查端口..."),
+		progressbar.OptionSetDescription("[cyan][reset]正在检查..."),
 		progressbar.OptionSetTheme(progressbar.Theme{
 			Saucer:        "[green]=[reset]",
 			SaucerHead:    "[green]>[reset]",

@@ -54,10 +54,10 @@ func (ps *PingScanner) Ping(ip string) bool {
 func (ps *PingScanner) ScanAll() {
 	bar := utils.CreateBar(255)
 	for i := 1; i <= 255; i++ {
-		bar.Add(1)
 		wg.Add(1)
 		go func(j int) {
 			defer wg.Done()
+			bar.Add(1)
 			ip := fmt.Sprintf("%s.%d", ps.Ipaddress, j)
 			if ps.Ping(ip) {
 				ps.AliveIp = append(ps.AliveIp, ip)

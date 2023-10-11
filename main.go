@@ -32,5 +32,14 @@ func main() {
 		for _, ip := range result {
 			fmt.Printf("%s 主机存活！\n", ip)
 		}
+	} else if args[0] == "ms" {
+		fmt.Println("正在使用Mysql扫描器扫描主机...")
+		ms := scan.MysqlscannerInit(args[1], args[2], args[3])
+		ms.ScanAll()
+		result := ms.GetMetadata()
+		fmt.Println("\n扫描完成!")
+		for _, meta := range result {
+			fmt.Println(meta)
+		}
 	}
 }
