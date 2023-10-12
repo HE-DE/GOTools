@@ -23,8 +23,6 @@ func PingScannerInit(ip string, count int) *PingScanner {
 	}
 }
 
-var wg sync.WaitGroup
-
 func (ps *PingScanner) Ping(ip string) bool {
 	pinger, err := ping.NewPinger(ip)
 	if err != nil {
@@ -52,6 +50,7 @@ func (ps *PingScanner) Ping(ip string) bool {
 }
 
 func (ps *PingScanner) ScanAll() {
+	var wg sync.WaitGroup
 	bar := utils.CreateBar(255)
 	for i := 1; i <= 255; i++ {
 		wg.Add(1)
@@ -66,17 +65,6 @@ func (ps *PingScanner) ScanAll() {
 
 	}
 	wg.Wait()
-}
-
-func (ps *PingScanner) ScanNo() {
-	bar := utils.CreateBar(255)
-	for i := 1; i <= 255; i++ {
-		bar.Add(1)
-		ip := fmt.Sprintf("%s.%d", ps.Ipaddress, i)
-		if ps.Ping(ip) {
-			ps.AliveIp = append(ps.AliveIp, ip)
-		}
-	}
 }
 
 func (ps *PingScanner) GetAliveIp() []string {
