@@ -23,7 +23,7 @@ func main() {
 		fmt.Println()
 		l.Info("扫描完成！")
 		for _, port := range result {
-			l.Debug(fmt.Sprintf("%d 端口开放！", port))
+			l.Notice(fmt.Sprintf("%d 端口开放！", port))
 		}
 	} else if args[0] == "ps" {
 		l.Info("正在使用Ping扫描器扫描主机...")
@@ -34,16 +34,17 @@ func main() {
 		fmt.Println()
 		l.Info("扫描完成！")
 		for _, ip := range result {
-			l.Debug(fmt.Sprintf("%s 主机存活!", ip))
+			l.Notice(fmt.Sprintf("%s 主机存活!", ip))
 		}
 	} else if args[0] == "ms" {
-		fmt.Println("正在使用Mysql扫描器扫描主机...")
+		l.Info("正在使用Mysql扫描器扫描主机...")
 		ms := scan.MysqlscannerInit(args[1], args[2], args[3])
 		ms.ScanAll()
 		result := ms.GetMetadata()
-		fmt.Println("\n扫描完成!")
+		fmt.Println()
+		l.Info("扫描完成！")
 		for _, meta := range result {
-			fmt.Println(meta)
+			l.Notice(meta)
 		}
 	}
 }
