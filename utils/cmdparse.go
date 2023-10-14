@@ -21,6 +21,16 @@ var (
 	username     = mysqlscanner.Arg("username", "数据库用户名").Required().String()
 	pwd          = mysqlscanner.Arg("pwd", "数据库密码").Required().String()
 	dbname       = mysqlscanner.Arg("dbname", "数据库名").Required().String()
+
+	FileEncoder = kingpin.Command("fe", "文件加密")
+	FilePath    = FileEncoder.Arg("filepath", "指定要加密的文件路径").Required().String()
+	FOutPath    = FileEncoder.Arg("foutpath", "指定加密后的文件路径").Required().String()
+	KeyEncoder  = FileEncoder.Arg("key", "指定加密的密钥").Required().String()
+
+	FileDecoder = kingpin.Command("fd", "文件解密")
+	FInPath     = FileDecoder.Arg("filepath", "指定要解密的文件路径").Required().String()
+	FileOutPath = FileDecoder.Arg("foutpath", "指定解密后的文件路径").Required().String()
+	KeyDecoder  = FileDecoder.Arg("key", "指定解密的密钥").Required().String()
 )
 
 func ParseArgs() []string {
@@ -43,6 +53,18 @@ func ParseArgs() []string {
 		Args = append(Args, *username)
 		Args = append(Args, *pwd)
 		Args = append(Args, *dbname)
+		return Args
+	case "fe":
+		Args = append(Args, "fe")
+		Args = append(Args, *FilePath)
+		Args = append(Args, *FOutPath)
+		Args = append(Args, *KeyEncoder)
+		return Args
+	case "fd":
+		Args = append(Args, "fd")
+		Args = append(Args, *FInPath)
+		Args = append(Args, *FileOutPath)
+		Args = append(Args, *KeyDecoder)
 		return Args
 	default:
 		return nil
