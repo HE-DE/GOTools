@@ -31,6 +31,10 @@ var (
 	FInPath     = FileDecoder.Arg("filepath", "指定要解密的文件路径").Required().String()
 	FileOutPath = FileDecoder.Arg("foutpath", "指定解密后的文件路径").Required().String()
 	KeyDecoder  = FileDecoder.Arg("key", "指定解密的密钥").Required().String()
+
+	TarGzip  = kingpin.Command("tg", "打包压缩")
+	TarPath  = TarGzip.Arg("tarpath", "指定要打包压缩的文件路径").Required().String()
+	GzipPath = TarGzip.Arg("gzippath", "指定打包压缩后的文件路径").Required().String()
 )
 
 func ParseArgs() []string {
@@ -65,6 +69,11 @@ func ParseArgs() []string {
 		Args = append(Args, *FInPath)
 		Args = append(Args, *FileOutPath)
 		Args = append(Args, *KeyDecoder)
+		return Args
+	case "tg":
+		Args = append(Args, "tg")
+		Args = append(Args, *TarPath)
+		Args = append(Args, *GzipPath)
 		return Args
 	default:
 		return nil

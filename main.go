@@ -74,5 +74,16 @@ func main() {
 			return
 		}
 		l.Info("解密完成！")
+	} else if args[0] == "tg" {
+		// TODO: 需要进一步更新
+		l.Info(fmt.Sprintf("正在打包文件夹%s...", args[1]))
+		utils.Tar(args[1], args[2])
+		l.Info("打包完成！")
+		err := utils.UnTar("./t2", args[2])
+		if err != nil {
+			l.Error(err.Error())
+			return
+		}
+		l.Info("解包完成！")
 	}
 }

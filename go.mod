@@ -8,10 +8,13 @@ require (
 	github.com/schollz/progressbar/v3 v3.13.1
 )
 
+require github.com/klauspost/compress v1.17.1 // indirect
+
 require (
 	github.com/alecthomas/units v0.0.0-20211218093645-b94a6e3cc137 // indirect
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/google/uuid v1.2.0 // indirect
+	github.com/klauspost/pgzip v1.2.6
 	github.com/mattn/go-runewidth v0.0.15 // indirect
 	github.com/mitchellh/colorstring v0.0.0-20190213212951-d06e56a500db // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
