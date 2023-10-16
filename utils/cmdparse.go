@@ -35,6 +35,10 @@ var (
 	TarGzip  = kingpin.Command("tg", "打包压缩")
 	TarPath  = TarGzip.Arg("tarpath", "指定要打包压缩的文件路径").Required().String()
 	GzipPath = TarGzip.Arg("gzippath", "指定打包压缩后的文件路径").Required().String()
+
+	UnTarGzip = kingpin.Command("ug", "解包解压缩")
+	GzipPathU = UnTarGzip.Arg("gzippath", "指定要解包解压缩的文件路径").Required().String()
+	TarPathU  = UnTarGzip.Arg("tarpath", "指定解包解压缩后的文件路径").Required().String()
 )
 
 func ParseArgs() []string {
@@ -74,6 +78,11 @@ func ParseArgs() []string {
 		Args = append(Args, "tg")
 		Args = append(Args, *TarPath)
 		Args = append(Args, *GzipPath)
+		return Args
+	case "ug":
+		Args = append(Args, "ug")
+		Args = append(Args, *GzipPathU)
+		Args = append(Args, *TarPathU)
 		return Args
 	default:
 		return nil
