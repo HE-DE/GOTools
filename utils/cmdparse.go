@@ -39,6 +39,9 @@ var (
 	UnTarGzip = kingpin.Command("ug", "解包解压缩")
 	GzipPathU = UnTarGzip.Arg("gzippath", "指定要解包解压缩的文件路径").Required().String()
 	TarPathU  = UnTarGzip.Arg("tarpath", "指定解包解压缩后的文件路径").Required().String()
+
+	Md5Encode = kingpin.Command("md5", "计算文件的MD5码")
+	Md5Path   = Md5Encode.Arg("md5path", "指定要计算MD5码的文件路径").Required().String()
 )
 
 func ParseArgs() []string {
@@ -83,6 +86,10 @@ func ParseArgs() []string {
 		Args = append(Args, "ug")
 		Args = append(Args, *GzipPathU)
 		Args = append(Args, *TarPathU)
+		return Args
+	case "md5":
+		Args = append(Args, "md5")
+		Args = append(Args, *Md5Path)
 		return Args
 	default:
 		return nil

@@ -90,5 +90,14 @@ func main() {
 			l.Error(err.Error())
 		}
 		l.Info("解压完成！")
+	} else if args[0] == "md5" {
+		l.Info(fmt.Sprintf("正在计算文件%s的MD5值...", args[1]))
+		md5 := scan.Md5EncoderInit(args[1])
+		err := md5.Md5Encode()
+		if err != nil {
+			l.Error(err.Error())
+		}
+		l.Info("MD5值计算完成!")
+		l.Info(md5)
 	}
 }
