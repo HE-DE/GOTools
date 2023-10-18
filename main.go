@@ -98,6 +98,6 @@ func main() {
 			l.Error(err.Error())
 		}
 		l.Info("MD5值计算完成!")
-		l.Info(md5)
+		l.Info(md5.GetMd5Code())
 	}
 }
