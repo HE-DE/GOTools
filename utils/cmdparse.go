@@ -42,6 +42,8 @@ var (
 
 	Md5Encode = kingpin.Command("md5", "计算文件的MD5码")
 	Md5Path   = Md5Encode.Arg("md5path", "指定要计算MD5码的文件路径").Required().String()
+
+	SysScanner = kingpin.Command("sys", "扫描系统信息")
 )
 
 func ParseArgs() []string {
@@ -90,6 +92,9 @@ func ParseArgs() []string {
 	case "md5":
 		Args = append(Args, "md5")
 		Args = append(Args, *Md5Path)
+		return Args
+	case "sys":
+		Args = append(Args, "sys")
 		return Args
 	default:
 		return nil

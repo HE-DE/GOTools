@@ -11,17 +11,24 @@ import (
 	"github.com/shirou/gopsutil/v3/load"
 )
 
-func GetCpuInfo() {
-	cpuPercent, _ := cpu.Percent(time.Second, true)
-	fmt.Printf("CPU使用率: %.3f%% \n", cpuPercent[0])
-	cpuNumber, _ := cpu.Counts(true)
-	fmt.Printf("CPU核心数: %v \n", cpuNumber)
+func GetCpuInfo() (float64, int, error) {
+	cpuPercent, err := cpu.Percent(time.Second, true)
+	if err != nil {
+		return 0, 0, err
+	}
+	// fmt.Printf("CPU使用率: %.3f%% \n", cpuPercent[0])
+	cpuNumber, err := cpu.Counts(true)
+	if err != nil {
+		return 0, 0, err
+	}
+	// fmt.Printf("CPU核心数: %v \n", cpuNumber)
+	return cpuPercent[0], cpuNumber, nil
 }
 
-func GetMemInfo() {
+func GetMemInfo() (uint64, uint64, uint64, float64, error) {
 	memInfo, err := mem.VirtualMemory()
 	if err != nil {
-		fmt.Println("get memory info fail. err: ", err)
+		return 0, 0, 0, 0, err
 	}
 	// 获取总内存大小，单位GB
 	memTotal := memInfo.Total / 1024 / 1024 / 1024
@@ -31,35 +38,41 @@ func GetMemInfo() {
 	memAva := memInfo.Available / 1024 / 1024
 	// 内存可用率
 	memUsedPercent := memInfo.UsedPercent
-	fmt.Printf("总内存: %v GB, 已用内存: %v MB, 可用内存: %v MB, 内存使用率: %.3f %% \n", memTotal, memUsed, memAva, memUsedPercent)
+	// fmt.Printf("总内存: %v GB, 已用内存: %v MB, 可用内存: %v MB, 内存使用率: %.3f %% \n", memTotal, memUsed, memAva, memUsedPercent)
+	return memTotal, memUsed, memAva, memUsedPercent, nil
 }
 
-func GetSysLoad() {
+func GetSysLoad() (string, error) {
 	loadInfo, err := load.Avg()
 	if err != nil {
-		fmt.Println("get average load fail. err: ", err)
+		return "", err
 	}
-	fmt.Printf("系统平均负载: %v \n", loadInfo)
+	// fmt.Printf("系统平均负载: %v \n", loadInfo)
+	return fmt.Sprintf("%v", loadInfo), nil
 }
 
-func GetHostInfo() {
+func GetHostInfo() (string, string, error) {
 	hostInfo, err := host.Info()
 	if err != nil {
-		fmt.Println("get host info fail, error: ", err)
+		return "", "", err
 	}
-	fmt.Printf("hostname is: %v, os platform: %v \n", hostInfo.Hostname, hostInfo.Platform)
+	// fmt.Printf("hostname is: %v, os platform: %v \n", hostInfo.Hostname, hostInfo.Platform)
+	return hostInfo.Hostname, hostInfo.Platform, nil
 }
 
-func GetDiskInfo() {
+func GetDiskInfo() ([]string, error) {
 	diskPart, err := disk.Partitions(false)
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
+	resultstorage := make([]string, 0)
 	for _, dp := range diskPart {
-		fmt.Println(dp)
+		temp := fmt.Sprintln(dp)
 		diskUsed, _ := disk.Usage(dp.Mountpoint)
-		fmt.Printf("分区总大小: %d MB \n", diskUsed.Total/1024/1024)
-		fmt.Printf("分区使用率: %.3f %% \n", diskUsed.UsedPercent)
-		fmt.Printf("分区inode使用率: %.3f %% \n", diskUsed.InodesUsedPercent)
+		temp += fmt.Sprintf("分区总大小: %d MB \n", diskUsed.Total/1024/1024)
+		temp += fmt.Sprintf("分区使用率: %.3f %% \n", diskUsed.UsedPercent)
+		temp += fmt.Sprintf("分区inode使用率: %.3f %% \n", diskUsed.InodesUsedPercent)
+		resultstorage = append(resultstorage, temp)
 	}
+	return resultstorage, nil
 }

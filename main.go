@@ -23,7 +23,7 @@ func main() {
 		fmt.Println()
 		l.Info("扫描完成！")
 		for _, port := range result {
-			l.Notice(fmt.Sprintf("%d 端口开放！", port))
+			l.Info(fmt.Sprintf("%d 端口开放！", port))
 		}
 	} else if args[0] == "ps" {
 		l.Info("正在使用Ping扫描器扫描主机...")
@@ -34,7 +34,7 @@ func main() {
 		fmt.Println()
 		l.Info("扫描完成！")
 		for _, ip := range result {
-			l.Notice(fmt.Sprintf("%s 主机存活!", ip))
+			l.Info(fmt.Sprintf("%s 主机存活!", ip))
 		}
 	} else if args[0] == "ms" {
 		l.Info("正在使用Mysql扫描器扫描主机...")
@@ -99,5 +99,19 @@ func main() {
 		}
 		l.Info("MD5值计算完成!")
 		l.Info(md5.GetMd5Code())
+	} else if args[0] == "sys" {
+		l.Info("正在扫描系统信息...")
+		ss := scan.SysScannerInit()
+		ss.ScanAll()
+		cpuPercent, cpuNumber, memTotal, memUsed, memAva, memPercent, loadInfo, hostname, platform, infoDisk := ss.GetAll()
+		l.Info(fmt.Sprintf("CPU使用率: %.3f%%", cpuPercent))
+		l.Info(fmt.Sprintf("CPU核心数: %v", cpuNumber))
+		l.Info(fmt.Sprintf("总内存: %v GB, 已用内存: %v MB, 可用内存: %v MB, 内存使用率: %.3f %%", memTotal, memUsed, memAva, memPercent))
+		l.Info(fmt.Sprintf("系统平均负载: %v", loadInfo))
+		l.Info(fmt.Sprintf("hostname is: %v", hostname))
+		l.Info(fmt.Sprintf("platform is: %v", platform))
+		for _, disk := range infoDisk {
+			l.Info(fmt.Sprintf("\n%s", disk))
+		}
 	}
 }
