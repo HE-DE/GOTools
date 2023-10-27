@@ -24,6 +24,7 @@ type TarGzipProcessor struct{}
 type UnTarGzipProcessor struct{}
 type Md5Processor struct{}
 type SystemInfoProcessor struct{}
+type ImageStitcherProcessor struct{}
 
 func (p *ScanProcessor) Process(args []string) {
 	// 端口扫描逻辑
@@ -152,4 +153,16 @@ func (p *SystemInfoProcessor) Process(args []string) {
 		l.Info(fmt.Sprintf("\n%s", disk))
 	}
 	l.Info("系统信息扫描完成！")
+}
+
+func (p *ImageStitcherProcessor) Process(args []string) {
+	// 图片拼接逻辑
+	l.Info("正在拼接图片...")
+	maxWidth, _ := strconv.ParseFloat(args[3], 64)
+	IS := scan.ImageStitcherInit(args[0], args[1], args[2], maxWidth)
+	err := IS.Stitch()
+	if err != nil {
+		l.Error(err.Error())
+	}
+	l.Info("图片拼接完成！")
 }

@@ -21,6 +21,8 @@ func ProcessorFactory(command string) ProcessorStrategy {
 		return &Md5Processor{}
 	case "sys":
 		return &SystemInfoProcessor{}
+	case "is":
+		return &ImageStitcherProcessor{}
 	default:
 		return nil
 	}

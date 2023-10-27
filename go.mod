@@ -13,6 +13,7 @@ require (
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/klauspost/compress v1.17.1 // indirect
+	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 // indirect
 	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/tklauser/go-sysconf v0.3.12 // indirect
 	github.com/tklauser/numcpus v0.6.1 // indirect

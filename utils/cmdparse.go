@@ -44,6 +44,12 @@ var (
 	Md5Path   = Md5Encode.Arg("md5path", "指定要计算MD5码的文件路径").Required().String()
 
 	SysScanner = kingpin.Command("sys", "扫描系统信息")
+
+	ImageStitcher = kingpin.Command("is", "图片拼接")
+	File1Path     = ImageStitcher.Arg("file1path", "指定要拼接的图片1的路径").Required().String()
+	File2Path     = ImageStitcher.Arg("file2path", "指定要拼接的图片2的路径").Required().String()
+	OutPath       = ImageStitcher.Arg("outpath", "指定拼接后的图片路径").Required().String()
+	MaxWidth      = ImageStitcher.Arg("maxwidth", "指定拼接后的图片的最大宽度").Required().String()
 )
 
 func ParseArgs() []string {
@@ -95,6 +101,13 @@ func ParseArgs() []string {
 		return Args
 	case "sys":
 		Args = append(Args, "sys")
+		return Args
+	case "is":
+		Args = append(Args, "is")
+		Args = append(Args, *File1Path)
+		Args = append(Args, *File2Path)
+		Args = append(Args, *OutPath)
+		Args = append(Args, *MaxWidth)
 		return Args
 	default:
 		return nil
