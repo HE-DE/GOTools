@@ -23,6 +23,8 @@ func ProcessorFactory(command string) ProcessorStrategy {
 		return &SystemInfoProcessor{}
 	case "is":
 		return &ImageStitcherProcessor{}
+	case "vc":
+		return &VideoFpsChangeProcessor{}
 	default:
 		return nil
 	}

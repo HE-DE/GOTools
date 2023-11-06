@@ -25,6 +25,7 @@ type UnTarGzipProcessor struct{}
 type Md5Processor struct{}
 type SystemInfoProcessor struct{}
 type ImageStitcherProcessor struct{}
+type VideoFpsChangeProcessor struct{}
 
 func (p *ScanProcessor) Process(args []string) {
 	// 端口扫描逻辑
@@ -165,4 +166,17 @@ func (p *ImageStitcherProcessor) Process(args []string) {
 		l.Error(err.Error())
 	}
 	l.Info("图片拼接完成！")
+}
+
+func (vc *VideoFpsChangeProcessor) Process(args []string) {
+	// 视频帧率转换逻辑
+	l.Info("正在转换视频帧率...")
+	fps, err := strconv.Atoi(args[2])
+	if err != nil {
+		l.Error(err.Error())
+	}
+	VC := scan.InitVideoChanger(args[0], args[1], fps)
+	result := VC.Changefps()
+	l.Info(result)
+	l.Info("视频帧率转换完成！")
 }

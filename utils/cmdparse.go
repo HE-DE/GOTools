@@ -50,6 +50,11 @@ var (
 	File2Path     = ImageStitcher.Arg("file2path", "指定要拼接的图片2的路径").Required().String()
 	OutPath       = ImageStitcher.Arg("outpath", "指定拼接后的图片路径").Required().String()
 	MaxWidth      = ImageStitcher.Arg("maxwidth", "指定拼接后的图片的最大宽度").Required().String()
+
+	Videochanger   = kingpin.Command("vc", "视频帧率转换")
+	VideoInputPath = Videochanger.Arg("videopath", "指定要转换的视频路径").Required().String()
+	VideoOutPath   = Videochanger.Arg("outpath", "指定转换后的视频路径").Required().String()
+	Fps            = Videochanger.Arg("fps", "指定转换后的视频帧率").Required().String()
 )
 
 func ParseArgs() []string {
@@ -108,6 +113,12 @@ func ParseArgs() []string {
 		Args = append(Args, *File2Path)
 		Args = append(Args, *OutPath)
 		Args = append(Args, *MaxWidth)
+		return Args
+	case "vc":
+		Args = append(Args, "vc")
+		Args = append(Args, *VideoInputPath)
+		Args = append(Args, *VideoOutPath)
+		Args = append(Args, *Fps)
 		return Args
 	default:
 		return nil
